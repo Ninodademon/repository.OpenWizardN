@@ -1,163 +1,147 @@
 <?xml version='1.0' encoding='utf-8'?>
-<addons><addon id="plugin.program.openwizard" name="[COLOR limegreen]Open[/COLOR]Wizard" version="2.0.7" provider-name="WizNino">
+<addons><addon id="inputstream.adaptive" version="21.0.3" name="InputStream Adaptive" provider-name="peak3d">
+  <requires>
+<import addon="kodi.binary.global.main" minversion="2.0.0" version="2.0.2" />
+<import addon="kodi.binary.global.general" minversion="1.0.4" version="1.0.5" />
+<import addon="kodi.binary.global.gui" minversion="5.15.0" version="5.15.0" />
+<import addon="kodi.binary.global.filesystem" minversion="1.1.7" version="1.1.8" />
+<import addon="kodi.binary.global.tools" minversion="1.0.0" version="1.0.4" />
+<import addon="kodi.binary.instance.inputstream" minversion="3.2.0" version="3.2.0" />
+<import addon="kodi.binary.instance.videocodec" minversion="2.0.4" version="2.0.4" /></requires>
+  <extension point="kodi.inputstream" name="adaptive" extension="" tags="true" listitemprops="license_type|license_key|license_data|license_flags|manifest_type|server_certificate|manifest_update_parameter|manifest_params|manifest_headers|stream_params|stream_headers|original_audio_language|play_timeshift_buffer|pre_init_data|stream_selection_type|chooser_bandwidth_max|chooser_resolution_max|chooser_resolution_secure_max" library_android="libinputstream.adaptive.so" />
+  <extension point="xbmc.addon.metadata">
+    <platform>android-aarch64</platform>
+	<license>GPL-2.0-or-later</license>
+	<source>https://github.com/xbmc/inputstream.adaptive</source>
+	<assets>
+      <icon>icon.png</icon>
+      <fanart>fanart.jpg</fanart>
+    </assets>
+    <summary lang="ca_ES">Client InputStream per a transmissions adaptatives</summary>
+    <summary lang="da_DK">InputStream-klient til adaptive streams</summary>
+    <summary lang="de_DE">InputStream-Client für adaptive Streams</summary>
+    <summary lang="en_GB">InputStream client for adaptive streams</summary>
+    <summary lang="es_ES">Cliente InputStream para flujo de datos adaptativos</summary>
+    <summary lang="he_IL">לקוח InputStream לתזרימים מסתגלים</summary>
+    <summary lang="hr_HR">InputStream klijent za adaptivne tokove</summary>
+    <summary lang="hu_HU">InputStream kliens az adaptív streamekhez</summary>
+    <summary lang="ko_KR">가변 스트림을 위한 InputStream 클라이언트</summary>
+    <summary lang="pl_PL">Klient InputStream dla strumieni adaptacyjnych</summary>
+    <summary lang="ru_RU">InputStream клиент для адаптивных трансляций</summary>
+    <description lang="ca_ES">Client InputStream per a transmissions adaptatives</description>
+    <description lang="da_DK">InputStream-klient til adaptive streams</description>
+    <description lang="de_DE">InputStream-Client für adaptive Streams</description>
+    <description lang="en_GB">InputStream client for adaptive streams. Common streaming protocols such as MPEG-DASH, HLS and Microsoft Smooth Streaming are supported.[CR][CR]The add-on also has support for DRM protected streams, such as Google Widevine, Microsoft PlayReady and others.[CR][CR]For documentation visit: https://github.com/xbmc/inputstream.adaptive</description>
+    <description lang="es_ES">Cliente InputStream para flujo de datos adaptativos</description>
+    <description lang="he_IL">לקוח InputStream לתזרימים מסתגלים</description>
+    <description lang="hr_HR">InputStream klijent za adaptivne tokove</description>
+    <description lang="hu_HU">InputStream kliens az adaptív streamekhez</description>
+    <description lang="ko_KR">가변 스트림을 위한 InputStream 클라이언트</description>
+    <description lang="pl_PL">Klient InputStream dla strumieni adaptacyjnych</description>
+    <description lang="ru_RU">InputStream клиент для адаптивных трансляций</description>
+  </extension>
+</addon><addon id="plugin.video.fen" name="Fen" provider-name="Tikipeter" version="3.1.06">
     <requires>
         <import addon="xbmc.python" version="3.0.0" />
-        <import addon="script.module.requests" />
-        <import addon="script.module.six" />
-        <import addon="script.kodi.android.update" optional="true" version="1.1.7" />
-        <import addon="script.speedtester" optional="true" version="1.1.2" />
+        <import addon="script.module.requests" version="2.19.1" />
+        <import addon="script.module.cocoscrapers" version="0.0.1" />
     </requires>
-    
-    <extension point="xbmc.python.pluginsource" library="default.py">
-        <provides>executable</provides>
+    <extension library="resources/lib/fen.py" point="xbmc.python.pluginsource">
+        <provides>video</provides>
     </extension>
-    
-    <extension point="xbmc.service" library="startup.py" start="startup" />
-    
+    <extension library="resources/lib/service.py" point="xbmc.service" />
+    <extension library="resources/lib/" point="xbmc.python.module" />
+    <extension point="kodi.context.item">
+        <menu id="kodi.core.main">
+            <item library="resources/contextmenu/refresh_widgets.py">
+                <label>[B]$ADDON[plugin.video.fen 32611][/B]</label>
+                <visible>String.IsEqual(ListItem.Property(fen.widget),true) + !String.StartsWith(Window(home).Property(fen.kodi_version),20)</visible>
+            </item>
+            <item library="resources/contextmenu/mark_watched.py">
+                <label>[B]$ADDON[plugin.video.fen 33130][/B]</label>
+                <visible>[String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,episode)] + String.IsEqual(ListItem.Property(fen.widget),true) + String.IsEqual(ListItem.Property(fen.playcount),0) + !String.StartsWith(Window(home).Property(fen.kodi_version),20)</visible>
+            </item>
+            <item library="resources/contextmenu/mark_unwatched.py">
+                <label>[B]$ADDON[plugin.video.fen 33131][/B]</label>
+                <visible>[String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,episode)] + String.IsEqual(ListItem.Property(fen.widget),true) + String.IsEqual(ListItem.Property(fen.playcount),1) + !String.StartsWith(Window(home).Property(fen.kodi_version),20)</visible>
+            </item>
+            <item library="resources/contextmenu/clear_progress.py">
+                <label>32651</label>
+                <visible>[String.IsEqual(ListItem.dbtype,movie) | String.IsEqual(ListItem.dbtype,episode)] + String.IsEqual(ListItem.Property(fen.widget),true) + String.IsEqual(ListItem.Property(fen.in_progress),true) + !String.StartsWith(Window(home).Property(fen.kodi_version),20)</visible>
+            </item>
+            <item library="resources/contextmenu/options.py">
+                <label>32646</label>
+                <visible>String.IsEqual(ListItem.Property(fen.widget),true) + !String.StartsWith(Window(home).Property(fen.kodi_version),20)</visible>
+            </item>
+            <item library="resources/contextmenu/extras.py">
+                <label>32645</label>
+                <visible>String.IsEqual(ListItem.Property(fen.widget),true) + !String.StartsWith(Window(home).Property(fen.kodi_version),20)</visible>
+            </item>
+        </menu>
+    </extension>
     <extension point="xbmc.addon.metadata">
-        <summary lang="en">[COLOR limegreen]Open[/COLOR]Wizard</summary>
-        <description lang="en">[COLOR limegreen]Open[/COLOR]Wizard offers many maintenance features, selective add-on data saving, and automated build installs.</description>
+        <reuselanguageinvoker>true</reuselanguageinvoker>
+        <summary lang="en">Mainly used for Furk and Easynews.</summary>
+        <description lang="en">This add-on is intended for advanced Kodi users only. Mainly used for Furk and Easynews(web) account access. An External Scraper package may be used. You must own the content of any media you play through this addon.</description>
         <platform>all</platform>
-        <reuselanguageinvoker>false</reuselanguageinvoker>
-        <source>https://github.com/Ninodademon/plugin.program.openwizard</source>
-        <news>
-2.0.7
- - Fix Error when using default log settings
-2.0.6
- - Fix regex for formatting tags
- - Fix theme selection after build install
- - Fix downloading into invalid path
-2.0.5
- - Add Enable All Add-ons after Build Install
-2.0.4
- - Fix leftover broken dialogs
-2.0.3
- - Don't show previous version builds in Matrix
-2.0.2
- - Replace remaining occurences of LOGNOTICE
-2.0.1
- - Add attribution to @slamious
-2.0.0
- - Initial Matrix support
-1.4.5
- - Fix bugs with unintended files being cleared`
-1.4.4
- - Transfer ownership
-1.4.3
- - Fix missing artwork on items (thanks @xulek)
-1.4.2
- - A few bug fixes
-1.4.1
- - Fix crash on fresh installs
-1.4.0
- - Fix APK Installer
- - Convert official APK downloader to use official script
- - Add scrollbar to Save Data dialog
- - Fix skin path in build info
-1.3.7
- - Fix import lock error
-1.3.6
- - Fix notifications
- - Cleanup log files
-1.3.5
- - Add Fen
- - Add Shadow
- - Fix restoring saved data every boot
-1.3.4
- - Fix bad indent
-1.3.3
- - Fix Unicode characters in notification window
-1.3.2
- - Fix build restore
-1.3.1
- - Fix "Keep Login Info" menu        
-1.3.0
- - Fix formatting of saved restore times
- - Fix local build zip being deleted on restore
- - Add YouTube API saving
- - Remove broken context menus
- - Fix repeating dialogs from shortcuts/favorites
- - Remove "Normal Install" option
- - Add "Logging Tools" menu
- - Add option to save guisettings.xml
- - Add TMDbHelper Fanart.tv saving
- - More fixes for OS X
- - Fix Seren Fanart.tv saving
-1.2.9
- - Fix NuMb3r5 cache clearing
- - Fix hang during repo force check
- - Fix logins being restored every startup
- - Fix some file permission errors
- - Fix OS X backup errors
-1.2.8
- - Add Gaia PM OAuth
- - Fix binary add-on restoration
- - Fix some issues with old settings
- - Fix timing on many startup tasks
-1.2.7
- - Add TheMovieDb Helper
-1.2.6
- - Fix Seren PM OAuth    
-1.2.5
- - Fix typo in debridit.py
-1.2.4
- - Cover more edge cases during binary detection
-1.2.3
- - Fix notification ID bug
-1.2.2
- - Add Seren PM OAuth
- - Add AllDebrid spport for Gaia, Seren, ResolveURL, and URLResolver
-1.2.1
- - General bug fixes
-1.2.0
- - Silence save data notifications on startup
- - Fix Addon Installer menu
- - Convert addons.txt to JSON format
-1.1.1
- - Fix error on advancedsettings categories
-1.1.0
- - Add back advancedsettings area under System Tweaks/Fixes
- - Rudimentary version of advancedsettings editor. Can currently only handle editing pre-existing tags under 'cache' and 'network'.
- - Convert advanced.txt to JSON format
- - Add "built-in" advancedsettings.xml presets
-1.0.3
- - Update artwork
- - Fix rare issues with URLs not working
- - Fix repetitive build prompt (again)
- - Fix builds downloading twice
- - Fix title coloring on notifications
- - Fix auto repo install
- - Fix first run settings not being respected
-1.0.2
- - Fix crash in login menu
- - Fix auto install repo
-1.0.1
- - Fix double startup
- - Fix repetitive build prompt
- - Fix main menu not opening on Krypton
- - Fix notification timeout
- - Fix crash in Trakt menu
-1.0.0
- - Initial Commit
-        </news>
+		<disclaimer lang="en">The author of this addon does not host any of the content which is found and has no affiliation with any of the content providers. This addon simply searches websites for content.</disclaimer>
+        <license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
         <assets>
-            <icon>icon.png</icon>
-            <fanart>fanart.png</fanart>
+            <icon>resources/media/fen_icon.png</icon>
+            <fanart>resources/media/fen_fanart.png</fanart>
+            <clearlogo>resources/media/fen_clearlogo.png</clearlogo>
         </assets>
+        <news>INFO: For latest changes see Changelog within Tools of add-on.</news>
     </extension>
 </addon><addon id="repository.WizNino" name="WizNino Repository" version="1.0.0" provider-name="WizNino">
     <extension point="xbmc.addon.repository" name="Example Repository">
-        <dir minversion="18.0" maxversion="20.1.0">
+        <dir>
             <info compressed="false">https://raw.githubusercontent.com/ninodademon/repository.WizNino/master/repo/zips/addons.xml</info>
             <checksum>https://raw.githubusercontent.com/ninodademon/repository.WizNino/master/repo/zips/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/ninodademon/repository.WizNino/master/repo/zips/</datadir>
-        </dir>
+            <datadir zip="true">https://raw.githubusercontent.com/ninodademon/repository.WizNino/master/repo/zips/plugin.program.openwizard/</datadir>
+		</dir>
+        <dir minversion="21.0.0">
+    <info compressed="false">https://raw.githubusercontent.com/ninodademon/repository.WizNino/master/omega/zips/addons.xml</info>
+    <checksum>https://raw.githubusercontent.com/ninodademon/repository.WizNino/master/omega/zips/addons.xml.md5</checksum>
+    <datadir zip="true">https://raw.githubusercontent.com/ninodademon/repository.WizNino/master/omega/zips/</datadir>
+		</dir>
+		<dir minversion="20.0.0" maxversion="20.9.9">
+    <info compressed="false">https://raw.githubusercontent.com/ninodademon/repository.WizNino/master/nexus/zips/addons.xml</info>
+    <checksum>https://raw.githubusercontent.com/ninodademon/repository.WizNino/master/nexus/zips/addons.xml.md5</checksum>
+    <datadir zip="true">https://raw.githubusercontent.com/ninodademon/repository.WizNino/master/nexus/zips/</datadir>
+		</dir>
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary>WizNino Repository</summary>
         <description>New Repository for Addons, Wizards, Etc</description>
         <disclaimer />
         <platform>all</platform>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon><addon id="skin.arctic.horizon.2" name="Arctic Horizon 2" provider-name="jurialmunkey" version="0.8.21">
+    <requires>
+        <import addon="xbmc.gui" version="5.15.0" />
+        <import addon="script.skinshortcuts" version="0.4.0" />
+        <import addon="script.skinvariables" version="1.0.0" />
+        <import addon="script.texturemaker" version="0.2.8" />
+        <import addon="plugin.video.themoviedb.helper" version="5.1.11~nexus" />
+        <import addon="resource.images.weathericons.white" version="0.0.1" />
+        <import addon="resource.images.studios.coloured" version="0.0.1" />
+        <import addon="resource.font.robotocjksc" version="0.0.1" />
+    </requires>
+    <extension debugging="false" defaultthemename="Textures.xbt" effectslowdown="1" point="xbmc.gui.skin">
+        <res aspect="16:9" default="true" folder="1080i" height="1080" width="1920" />
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="en">Minimal. Classic. Gradients. Widgets.</summary>
+        <description lang="en">Arctic Horizon 2</description>
+        <platform>all</platform>
+        <license>Creative Commons Attribution Non-Commercial Share-Alike 4.0</license>
+        <forum />
+        <source />
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.jpg</fanart>
